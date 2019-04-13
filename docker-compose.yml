@@ -1,0 +1,8 @@
+version: '3'
+services:
+  dev:
+    build: .
+    image: dev:alpine
+    network_mode: host
+    stdin_open: true
+    tty: true
