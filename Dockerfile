@@ -3,16 +3,13 @@ FROM golang:1.12.4-alpine
 # Environment
 ENV GO111MODULE on
 ENV GODEBUG tls13=1
+ENV GOPATH /home/developer/go
+ENV PATH $GOPATH/bin:$PATH
 
 # Packages
 RUN apk update && \
 	apk upgrade && \
-	apk --no-cache add git curl bash nodejs npm ca-certificates
-
-# Pack and run
-RUN go install github.com/aerogo/pack && \
-	go install github.com/aerogo/run && \
-	go install golang.org/x/tools/cmd/goimports
+	apk --no-cache add bash ca-certificates curl gcc git musl-dev nodejs npm
 
 # Git LFS
 RUN LFS_VERSION=2.7.1 && \
@@ -32,4 +29,11 @@ RUN addgroup -g 1000 developer && \
 # Set user
 USER developer
 WORKDIR /home/developer
+
+# Pack and run
+RUN mkdir /home/developer/go && \
+	go install github.com/aerogo/pack && \
+	go install github.com/aerogo/run && \
+	go install golang.org/x/tools/cmd/goimports
+
 ENTRYPOINT ["/bin/bash"]
