@@ -7,7 +7,7 @@ ENV GODEBUG tls13=1
 # Packages
 RUN apk update && \
 	apk upgrade && \
-	apk --no-cache add git curl bash nodejs npm
+	apk --no-cache add git curl bash nodejs npm ca-certificates
 
 # Pack and run
 RUN go install github.com/aerogo/pack && \

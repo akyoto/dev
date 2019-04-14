@@ -1,8 +1,8 @@
-version: '3'
+version: "3"
 services:
   dev:
     build: .
-    image: dev:alpine
+    image: blitzprog/aero
     network_mode: host
     stdin_open: true
     tty: true
