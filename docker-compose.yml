@@ -1,7 +1,12 @@
-version: "3"
+version: "3.4"
 services:
   aero:
-    build: .
+    build:
+      context: .
+      network: host
     image: blitzprog/aero
+    network_mode: host
     stdin_open: true
     tty: true
+    volumes:
+      - ~:/home/developer/host

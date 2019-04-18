@@ -1,44 +1,35 @@
-FROM golang:1.12.4-alpine
+FROM blitzprog/archlinux
 
 # Environment
-ENV GO111MODULE on
-ENV GODEBUG tls13=1
-ENV GOPATH /home/developer/go
-ENV PATH $GOPATH/bin:$PATH
+ENV GO111MODULE=on \
+	GODEBUG=tls13=1 \
+	PATH=/home/developer/go/bin:$PATH
 
 # Packages
-RUN apk update && \
-	apk upgrade && \
-	apk --no-cache add bash ca-certificates curl gcc git musl-dev nodejs npm
+RUN pacman -Sy --noconfirm base-devel git git-lfs go nodejs npm vim zsh zsh-autosuggestions zsh-syntax-highlighting
 
-# Git LFS
-RUN LFS_VERSION=2.7.1 && \
-	mkdir lfs && \
-	curl -s -L "https://github.com/git-lfs/git-lfs/releases/download/v$LFS_VERSION/git-lfs-linux-amd64-v$LFS_VERSION.tar.gz" | tar -C ./lfs -xz && \
-	./lfs/install.sh && \
-	rm -rf lfs
-
-# NPM and TypeScript
-RUN npm i -g --production npm && \
-	npm i -g --production typescript
+# Sudo
+RUN rm /etc/sudoers && \
+	echo -e "root ALL=(ALL) ALL\n%wheel ALL=(ALL) ALL\n" > /etc/sudoers
 
 # Add user
-RUN addgroup -g 1000 developer && \
-	adduser -D -u 1000 -G developer developer
+RUN groupadd -g 1000 developer && \
+	useradd -m -u 1000 -g users -G developer,wheel -s /bin/zsh developer
+
+# TypeScript
+RUN npm i -g --production typescript
 
 # Set user
 USER developer
 WORKDIR /home/developer
 
 # Pack and run
-RUN mkdir /home/developer/go && \
-	go install github.com/aerogo/pack && \
+RUN go install github.com/aerogo/pack && \
 	go install github.com/aerogo/run && \
 	go install golang.org/x/tools/cmd/goimports
 
-# Bash configuration
-RUN curl -s -o .bashrc https://raw.githubusercontent.com/blitzprog/home/master/.bashrc && \
-	curl -s -o .bash_aliases https://raw.githubusercontent.com/blitzprog/home/master/.bash_aliases && \
-	curl -s -o .bash_prompt https://raw.githubusercontent.com/blitzprog/home/master/.bash_prompt
+# Zsh configuration
+RUN git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git /home/developer/.oh-my-zsh && \
+	curl -so .zshrc https://raw.githubusercontent.com/blitzprog/home/master/.zshrc
 
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["/bin/zsh"]
