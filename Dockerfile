@@ -10,11 +10,10 @@ RUN pacman -Sy --noconfirm base-devel git git-lfs go nodejs npm vim zsh zsh-auto
 
 # Sudo
 RUN rm /etc/sudoers && \
-	echo -e "root ALL=(ALL) ALL\n%wheel ALL=(ALL) ALL\n" > /etc/sudoers
+	echo -e "root ALL=(ALL) ALL\n%wheel ALL=(ALL) NOPASSWD: ALL\n" > /etc/sudoers
 
 # Add user
-RUN groupadd -g 1000 developer && \
-	useradd -m -u 1000 -g users -G developer,wheel -s /bin/zsh developer
+RUN useradd -m -G wheel -s /bin/zsh developer
 
 # TypeScript
 RUN npm i -g --production typescript
@@ -30,6 +29,16 @@ RUN go install github.com/aerogo/pack && \
 
 # Zsh configuration
 RUN git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git /home/developer/.oh-my-zsh && \
-	curl -so .zshrc https://raw.githubusercontent.com/blitzprog/home/master/.zshrc
+	curl -so .zshrc https://raw.githubusercontent.com/blitzprog/home/master/.zshrc && \
+	curl -so .zshrc https://raw.githubusercontent.com/blitzprog/home/master/.zshenv
+
+# Zsh pure prompt
+RUN git clone https://aur.archlinux.org/zsh-pure-prompt.git /tmp/pure && \
+	cd /tmp/pure && \
+	makepkg -si --noconfirm && \
+	rm -rf /tmp/pure
+
+# Create empty working directory
+WORKDIR /my
 
 ENTRYPOINT ["/bin/zsh"]
