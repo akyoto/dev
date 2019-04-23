@@ -37,8 +37,8 @@ RUN mkdir /home/developer/go && \
 	go install golang.org/x/tools/cmd/goimports
 
 # Bash configuration
-RUN curl -s -o .bashrc https://raw.githubusercontent.com/blitzprog/home/master/.bashrc && \
-	curl -s -o .bash_aliases https://raw.githubusercontent.com/blitzprog/home/master/.bash_aliases && \
-	curl -s -o .bash_prompt https://raw.githubusercontent.com/blitzprog/home/master/.bash_prompt
+RUN curl -s -o .bashrc https://raw.githubusercontent.com/akyoto/home/master/.bashrc && \
+	curl -s -o .bash_aliases https://raw.githubusercontent.com/akyoto/home/master/.bash_aliases && \
+	curl -s -o .bash_prompt https://raw.githubusercontent.com/akyoto/home/master/.bash_prompt
 
 ENTRYPOINT ["/bin/bash"]

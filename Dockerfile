@@ -29,8 +29,8 @@ RUN go install github.com/aerogo/pack && \
 
 # Zsh configuration
 RUN git clone --depth=1 https://github.com/robbyrussell/oh-my-zsh.git /home/developer/.oh-my-zsh && \
-	curl -so .zshrc https://raw.githubusercontent.com/blitzprog/home/master/.zshrc && \
-	curl -so .zshenv https://raw.githubusercontent.com/blitzprog/home/master/.zshenv
+	curl -so .zshrc https://raw.githubusercontent.com/akyoto/home/master/.zshrc && \
+	curl -so .zshenv https://raw.githubusercontent.com/akyoto/home/master/.zshenv
 
 # Zsh pure prompt
 RUN git clone https://aur.archlinux.org/zsh-pure-prompt.git /tmp/pure && \
