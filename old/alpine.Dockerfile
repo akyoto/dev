@@ -33,8 +33,7 @@ WORKDIR /home/developer
 # Pack and run
 RUN mkdir /home/developer/go && \
 	go install github.com/aerogo/pack && \
-	go install github.com/aerogo/run && \
-	go install golang.org/x/tools/cmd/goimports
+	go install github.com/aerogo/run
 
 # Bash configuration
 RUN curl -s -o .bashrc https://raw.githubusercontent.com/akyoto/home/master/.bashrc && \
