@@ -3,13 +3,14 @@ FROM blitzprog/archlinux
 # Environment
 ENV GO111MODULE=on \
 	GODEBUG=tls13=1 \
+	CGO_ENABLED=0 \
 	PATH=/root/go/bin:$PATH
 
 # DNS settings
 RUN echo -e "nameserver 1.1.1.1\nnameserver 1.0.0.1" > /etc/resolv.conf
 
 # Packages
-RUN pacman -Sy --noconfirm base-devel git git-lfs go nodejs npm zsh zsh-autosuggestions zsh-syntax-highlighting
+RUN pacman -Sy --noconfirm file git git-lfs go make nodejs npm zsh zsh-autosuggestions zsh-syntax-highlighting
 
 # TypeScript and Pure
 RUN npm i -g --production typescript
