@@ -3,6 +3,7 @@ FROM blitzprog/archlinux
 # Environment
 ENV GO111MODULE=on \
 	GODEBUG=tls13=1 \
+	GOPROXY=https://proxy.golang.org \
 	CGO_ENABLED=0 \
 	PATH=/root/go/bin:$PATH
 
